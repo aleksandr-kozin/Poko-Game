@@ -1,0 +1,14 @@
+services:
+  database:
+    image: mysql
+    cap_add:
+      - SYS_NICE
+    container_name: poko-local-container
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: poko-local
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./src/main/resources/database:/docker-entrypoint-initdb.d
