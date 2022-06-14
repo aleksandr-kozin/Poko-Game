@@ -8,8 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+    boolean existsByNickName(String nickName);
+
     @Query("""
-            SELECT new com.mipsas.poko.security.jwt.JwtUser(u.nickName, c.password, u.role.name, u.status) 
+            SELECT new com.mipsas.poko.security.jwt.JwtUser(u.nickName, c.password, u.role, u.status) 
             FROM CredentialEntity c JOIN c.user u
             """)
     Optional<JwtUser> findJwtUserByEmail(String email);

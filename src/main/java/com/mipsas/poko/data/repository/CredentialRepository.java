@@ -4,4 +4,6 @@ import com.mipsas.poko.data.entity.CredentialEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CredentialRepository extends JpaRepository<CredentialEntity, Long> {
+
+    boolean existsByEmail(String email);
 }

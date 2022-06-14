@@ -11,6 +11,8 @@ public enum ErrorStatus {
     INTERNAL_ERROR("Internal error"),
     UNEXPECTED_ERROR("Unexpected exception"),
     ACCESS_DENIED("You cannot perform this operation."),
+    EXISTS_USER("The user already exists"),
+    EXISTS_CREDENTIAL("Your email is already registered. Please login using this email."),
     NOT_EXISTS_USER("This user doesn't exist."),
     NOT_EXIST_CREDENTIAL("Credential doesn't exist"),
     BAD_CREDENTIALS("Unable to parse credentials");

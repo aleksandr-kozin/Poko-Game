@@ -1,5 +1,6 @@
 package com.mipsas.poko.security.jwt;
 
+import com.mipsas.poko.common.enums.UserAuthority;
 import com.mipsas.poko.common.enums.UserStatus;
 import java.util.Collection;
 import java.util.List;
@@ -18,12 +19,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class JwtUser implements UserDetails {
     private String nickName;
     private String password;
-    private String roleName;
+    private UserAuthority role;
     private UserStatus status;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + roleName.toUpperCase()));
+        return List.of(new SimpleGrantedAuthority(role.getAuthority()));
     }
 
     @Override
