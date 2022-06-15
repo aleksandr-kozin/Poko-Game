@@ -1,9 +1,13 @@
-package com.mipsas.poko.security.config;
+package com.mipsas.poko.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static com.mipsas.poko.api.Paths.USER_REGISTRATION;
-import com.mipsas.poko.security.jwt.JwtAuthenticationFilter;
-import com.mipsas.poko.security.jwt.JwtAuthorizationFilter;
+import com.mipsas.poko.api.service.UserLocationService;
+import com.mipsas.poko.api.service.UserMetaDataService;
+import com.mipsas.poko.security.filter.JwtAuthenticationFilter;
+import com.mipsas.poko.security.filter.JwtAuthorizationFilter;
+import com.mipsas.poko.security.filter.UserLocationFilter;
+import com.mipsas.poko.security.filter.UserMetaDataFilter;
 import com.mipsas.poko.security.jwt.JwtUserDetailsService;
 import com.mipsas.poko.security.service.JwtServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -25,6 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtUserDetailsService userDetailsService;
     private final JwtServiceImpl jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final UserLocationService userLocationService;
+    private final UserMetaDataService userMetaDataService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -48,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), objectMapper, jwtService))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtService));
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtService))
+                .addFilterAfter(new UserLocationFilter(userLocationService), BasicAuthenticationFilter.class)
+                .addFilterAfter(new UserMetaDataFilter(userMetaDataService), BasicAuthenticationFilter.class);
     }
 }
