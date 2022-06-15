@@ -14,3 +14,7 @@ spring:
 jwt:
   secret: PocoAppTestSecret
   expiration: 30 # in minutes
+
+geolite2:
+  city-db-location: classpath:location/GeoLite2-City.mmdb
+  asn-db-location: classpath:location/GeoLite2-ASN.mmdb
