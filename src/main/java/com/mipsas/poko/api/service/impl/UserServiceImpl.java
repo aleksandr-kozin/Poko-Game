@@ -12,12 +12,14 @@ import com.mipsas.poko.data.entity.UserEntity;
 import com.mipsas.poko.data.repository.CredentialRepository;
 import com.mipsas.poko.data.repository.UserRepository;
 import com.mipsas.poko.security.jwt.JwtUser;
+import java.security.Principal;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,14 +30,12 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void saveUser(UserRegisterRequest request) {
-        if (userRepository.existsByNickName(request.nickName())) {
-            EXISTS_USER.throwException();
-        }
+    public void registerUser(UserRegisterRequest request) {
+        userRepository.findByNickName(request.nickName())
+                .ifPresent(user -> EXISTS_USER.throwException());
 
-        if (credentialRepository.existsByEmail(request.email())) {
-            EXISTS_CREDENTIAL.throwException();
-        }
+        credentialRepository.findByEmail(request.email())
+                .ifPresent(c -> EXISTS_CREDENTIAL.throwException());
 
         UserEntity savedUser = userRepository.save(UserEntity.builder()
                 .nickName(request.nickName())
@@ -61,5 +61,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void signOut(HttpServletRequest request, HttpServletResponse response) {
+    }
+
+    @Override
+    public UserEntity getAuthenticatedUser() {
+        return userRepository.findByNickName(getAuthenticatedUserName())
+                .orElse(null);
+    }
+
+    private String getAuthenticatedUserName() {
+        return Optional.ofNullable(getAuthentication())
+                .map(Principal::getName)
+                .orElse(null);
+    }
+
+    private Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 }
