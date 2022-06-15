@@ -1,9 +1,10 @@
 package com.mipsas.poko.data.repository;
 
 import com.mipsas.poko.data.entity.CredentialEntity;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CredentialRepository extends JpaRepository<CredentialEntity, Long> {
 
-    boolean existsByEmail(String email);
+    Optional<CredentialEntity> findByEmail(String email);
 }

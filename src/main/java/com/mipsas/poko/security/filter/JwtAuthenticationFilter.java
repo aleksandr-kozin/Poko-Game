@@ -1,8 +1,9 @@
-package com.mipsas.poko.security.jwt;
+package com.mipsas.poko.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static com.mipsas.poko.api.exception.ErrorStatus.BAD_CREDENTIALS;
 import com.mipsas.poko.api.model.request.SignInRequest;
+import com.mipsas.poko.security.jwt.JwtUser;
 import com.mipsas.poko.security.service.JwtServiceImpl;
 import java.io.IOException;
 import javax.servlet.FilterChain;

@@ -15,6 +15,7 @@ public enum ErrorStatus {
     EXISTS_CREDENTIAL("Your email is already registered. Please login using this email."),
     NOT_EXISTS_USER("This user doesn't exist."),
     NOT_EXIST_CREDENTIAL("Credential doesn't exist"),
+    NO_AUTHORIZED_USER("No authorized user"),
     BAD_CREDENTIALS("Unable to parse credentials");
 
     private final String message;

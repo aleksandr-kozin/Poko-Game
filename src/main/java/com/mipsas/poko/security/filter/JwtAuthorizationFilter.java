@@ -1,5 +1,6 @@
-package com.mipsas.poko.security.jwt;
+package com.mipsas.poko.security.filter;
 
+import com.mipsas.poko.security.service.JwtService;
 import com.mipsas.poko.security.service.JwtServiceImpl;
 import java.io.IOException;
 import java.util.Optional;
@@ -16,7 +17,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     public static final String BEARER = "Bearer ";
 
-    private final JwtServiceImpl jwtService;
+    private final JwtService jwtService;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, JwtServiceImpl jwtService) {
         super(authenticationManager);

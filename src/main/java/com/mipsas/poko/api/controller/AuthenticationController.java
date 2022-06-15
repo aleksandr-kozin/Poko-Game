@@ -22,7 +22,7 @@ public class AuthenticationController {
 
     @PostMapping(REGISTRATION)
     public void registration(@RequestBody @Valid UserRegisterRequest request) {
-        userService.saveUser(request);
+        userService.registerUser(request);
     }
 
     @PostMapping(SIGN_OUT)

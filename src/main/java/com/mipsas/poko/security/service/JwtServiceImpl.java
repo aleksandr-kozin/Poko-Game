@@ -1,5 +1,6 @@
 package com.mipsas.poko.security.service;
 
+import static com.mipsas.poko.api.exception.ErrorStatus.ACCESS_DENIED;
 import com.mipsas.poko.security.jwt.JwtUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -8,6 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -46,16 +48,38 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public Authentication parseToken(String token) {
         try {
-            Claims parsedToken = Jwts.parser()
-                    .setSigningKey(secret)
-                    .parseClaimsJws(token)
-                    .getBody();
+            Claims parsedToken = getClaims(token);
 
             String nickName = parsedToken.getSubject();
 
             return new UsernamePasswordAuthenticationToken(nickName, null, List.of(new SimpleGrantedAuthority(ROLE_PREFIX + parsedToken.get(ROLE_KEY))));
         } catch (JwtException | IllegalArgumentException e) {
             return null;
+        }
+    }
+
+    @Override
+    public Date getExpirationDate(final String token) {
+        return getClaim(token, Claims::getExpiration);
+    }
+
+    @Override
+    public boolean isNotExpired(final String token) {
+        return getExpirationDate(token).after(new Date());
+    }
+
+    private <T> T getClaim(final String token, final Function<Claims, T> claimsResolver) {
+        return claimsResolver.apply(getClaims(token));
+    }
+
+    private Claims getClaims(final String token) {
+        try {
+            return Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (JwtException | IllegalArgumentException e) {
+            throw ACCESS_DENIED.getException();
         }
     }
 }

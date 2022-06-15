@@ -1,4 +1,4 @@
-package com.mipsas.poko.security.config;
+package com.mipsas.poko.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
