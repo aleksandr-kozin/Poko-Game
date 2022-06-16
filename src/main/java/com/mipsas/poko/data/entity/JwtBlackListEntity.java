@@ -1,6 +1,6 @@
 package com.mipsas.poko.data.entity;
 
-import java.time.Instant;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -17,5 +17,5 @@ public class JwtBlackListEntity extends BaseEntity<Long> {
     private String token;
 
     @Column(name = "expiration_date")
-    private Instant expirationDate;
+    private Date expirationDate;
 }
