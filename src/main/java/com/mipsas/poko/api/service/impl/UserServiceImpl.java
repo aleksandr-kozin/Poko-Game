@@ -14,8 +14,6 @@ import com.mipsas.poko.data.repository.UserRepository;
 import com.mipsas.poko.security.jwt.JwtUser;
 import java.security.Principal;
 import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -57,10 +55,6 @@ public class UserServiceImpl implements UserService {
         return userRepository
                 .findJwtUserByEmail(email)
                 .orElseThrow(NOT_EXISTS_USER::getException);
-    }
-
-    @Override
-    public void signOut(HttpServletRequest request, HttpServletResponse response) {
     }
 
     @Override
