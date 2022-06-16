@@ -1,19 +1,31 @@
-package com.mipsas.poko.security.service;
+package com.mipsas.poko.security.service.impl;
 
 import static com.mipsas.poko.api.exception.ErrorStatus.ACCESS_DENIED;
+import static com.mipsas.poko.security.filter.JwtAuthorizationFilter.BEARER;
 import com.mipsas.poko.security.jwt.JwtUser;
+import com.mipsas.poko.security.jwt.UserAndClaims;
+import com.mipsas.poko.security.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.startsWith;
 import org.springframework.beans.factory.annotation.Value;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -46,33 +58,41 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public Authentication parseToken(String token) {
-        try {
-            Claims parsedToken = getClaims(token);
-
-            String nickName = parsedToken.getSubject();
-
-            return new UsernamePasswordAuthenticationToken(nickName, null, List.of(new SimpleGrantedAuthority(ROLE_PREFIX + parsedToken.get(ROLE_KEY))));
-        } catch (JwtException | IllegalArgumentException e) {
-            return null;
-        }
+    public String resolveToken(HttpServletRequest request) {
+        return Optional.ofNullable(request.getHeader(AUTHORIZATION))
+                .filter(h -> startsWith(h, BEARER))
+                .map(h -> h.replaceFirst(BEARER, ""))
+                .orElse(null);
     }
 
     @Override
-    public Date getExpirationDate(final String token) {
+    public Authentication getAuthenticationToken(UserAndClaims userAndClaims) {
+        String userName = userAndClaims.getUserName();
+        return new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority(ROLE_PREFIX + userAndClaims.getTokenClaims().get(ROLE_KEY))));
+    }
+
+    @Override
+    public UserAndClaims getUserNameWithClaims(String token) {
+        return UserAndClaims.builder()
+                .userName(getClaim(token, Claims::getSubject))
+                .tokenClaims(getClaims(token)).build();
+    }
+
+    @Override
+    public Date getExpirationDate(String token) {
         return getClaim(token, Claims::getExpiration);
     }
 
     @Override
-    public boolean isNotExpired(final String token) {
-        return getExpirationDate(token).after(new Date());
+    public boolean isNotExpired(String token) {
+        return isNotBlank(token) && getExpirationDate(token).after(new Date());
     }
 
-    private <T> T getClaim(final String token, final Function<Claims, T> claimsResolver) {
+    private <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
         return claimsResolver.apply(getClaims(token));
     }
 
-    private Claims getClaims(final String token) {
+    private Claims getClaims(String token) {
         try {
             return Jwts.parser()
                     .setSigningKey(secret)
