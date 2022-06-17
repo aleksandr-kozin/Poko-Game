@@ -13,6 +13,7 @@ public enum ErrorStatus {
     ACCESS_DENIED("You cannot perform this operation."),
     EXISTS_USER("The user already exists"),
     EXISTS_CREDENTIAL("Your email is already registered. Please login using this email."),
+    EXISTS_NICKNAME("The nick name already exists."),
     NOT_EXISTS_USER("This user doesn't exist."),
     NOT_EXIST_CREDENTIAL("Credential doesn't exist"),
     NO_AUTHORIZED_USER("No authorized user"),

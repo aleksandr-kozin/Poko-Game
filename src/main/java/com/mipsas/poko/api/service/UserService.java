@@ -1,14 +1,21 @@
 package com.mipsas.poko.api.service;
 
+import com.mipsas.poko.api.model.request.UpdateUserRequest;
 import com.mipsas.poko.api.model.request.UserRegisterRequest;
+import com.mipsas.poko.data.entity.MetaDataEntity;
 import com.mipsas.poko.data.entity.UserEntity;
+import com.mipsas.poko.data.entity.UserLocationEntity;
 import com.mipsas.poko.security.jwt.JwtUser;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public interface UserService {
+    List<UserEntity> getAllUsers();
+    UserEntity getUserById(Long id);
+    void updateUser(UpdateUserRequest request);
+    void deleteUserById(Long id);
+    List<UserLocationEntity> getUserLocations(Long id);
+    List<MetaDataEntity> getUserMetaData(Long id);
     void registerUser(UserRegisterRequest request);
     JwtUser getJwtUser(String email);
-    void signOut(HttpServletRequest request, HttpServletResponse response);
     UserEntity getAuthenticatedUser();
 }

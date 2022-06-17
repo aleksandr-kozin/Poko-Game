@@ -7,11 +7,14 @@ import javax.validation.constraints.Size;
 
 public record UserRegisterRequest(
 
-        @NotBlank
-        @Size(min = 2, max = 20)
+        @NotBlank(message = "{validation.notblank}")
+        @Size(min = 2, max = 20, message = "{validation.size}")
         String nickName,
 
+        @Size(min = 1, max = 100, message = "{validation.size}")
         String firstName,
+
+        @Size(min = 1, max = 100, message = "{validation.size}")
         String lastName,
 
         @Email

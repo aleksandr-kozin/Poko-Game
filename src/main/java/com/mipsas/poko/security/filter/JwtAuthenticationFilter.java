@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import static com.mipsas.poko.api.exception.ErrorStatus.BAD_CREDENTIALS;
 import com.mipsas.poko.api.model.request.SignInRequest;
 import com.mipsas.poko.security.jwt.JwtUser;
-import com.mipsas.poko.security.service.JwtServiceImpl;
+import com.mipsas.poko.security.service.impl.JwtServiceImpl;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
