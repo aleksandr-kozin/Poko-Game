@@ -46,6 +46,8 @@ public class UserMetaDataServiceImpl implements UserMetaDataService {
                                 .systemNumber(systemNumber)
                                 .build());
 
+                        log.info("User's {} metadata saved successfully", user.getNickName());
+
                     } catch (Exception e) {
                         log.error("Failed to verified user meta data: {}", e.getMessage());
                     }

@@ -2,10 +2,12 @@ package com.mipsas.poko.api.controller;
 
 import static com.mipsas.poko.api.Paths.AUTH;
 import static com.mipsas.poko.api.Paths.REGISTRATION;
+import static com.mipsas.poko.api.Paths.SIGN_IN;
 import static com.mipsas.poko.api.Paths.SIGN_OUT;
+import com.mipsas.poko.api.model.request.SignInRequest;
 import com.mipsas.poko.api.model.request.UserRegisterRequest;
+import com.mipsas.poko.api.model.response.SignInResponse;
 import com.mipsas.poko.api.service.AuthenticationService;
-import com.mipsas.poko.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.servlet.http.HttpServletRequest;
@@ -21,13 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping(AUTH)
 public class AuthenticationController {
-    private final UserService userService;
     private final AuthenticationService authenticationService;
 
     @Operation(summary = "Register new user")
     @PostMapping(REGISTRATION)
     public void registration(@RequestBody @Valid UserRegisterRequest request) {
-        userService.registerUser(request);
+        authenticationService.registerUser(request);
+    }
+
+    @Operation(summary = "User sign in")
+    @PostMapping(SIGN_IN)
+    public SignInResponse signIn(@RequestBody @Valid SignInRequest request) {
+        return authenticationService.signIn(request);
     }
 
     @Operation(summary = "User sign out")

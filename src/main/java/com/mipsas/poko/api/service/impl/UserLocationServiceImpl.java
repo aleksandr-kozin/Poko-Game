@@ -53,6 +53,8 @@ public class UserLocationServiceImpl implements UserLocationService {
                                 .state(state)
                                 .build());
 
+                        log.info("User's {} location saved successfully", user.getNickName());
+
                     } catch (Exception e) {
                         log.error("Failed to verified user location: {}", e.getMessage());
                     }
