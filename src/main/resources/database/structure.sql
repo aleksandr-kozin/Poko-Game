@@ -26,6 +26,11 @@ CREATE TABLE IF NOT EXISTS meta_data (
     ip VARCHAR(50) NOT NULL,
     provider VARCHAR(100),
     system_number BIGINT,
+    agent_name VARCHAR(100),
+    agent_version VARCHAR(10),
+    os_name VARCHAR(50),
+    os_version VARCHAR(10),
+    device_name VARCHAR(50),
     date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id BIGINT UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
