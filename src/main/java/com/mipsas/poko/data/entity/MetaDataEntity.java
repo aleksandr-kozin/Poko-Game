@@ -20,6 +20,21 @@ public class MetaDataEntity extends BaseEntity<Long> {
     @Column(name = "system_number")
     private Long systemNumber;
 
+    @Column(name = "agent_name")
+    private String agentName;
+
+    @Column(name = "agent_version")
+    private String agentVersion;
+
+    @Column(name = "os_name")
+    private String osName;
+
+    @Column(name = "os_version")
+    private String osVersion;
+
+    @Column(name = "device_name")
+    private String deviceName;
+
     @Builder.Default
     private Instant date = Instant.now();
 

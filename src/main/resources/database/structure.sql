@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     nick_name VARCHAR(50) UNIQUE NOT NULL,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
-    status ENUM('ACTIVE', 'NOT_ACTIVE', 'DELETED') NOT NULL DEFAULT 'ACTIVE',
+    status ENUM('ACTIVE', 'NOT_ACTIVE', 'DELETED') NOT NULL DEFAULT 'NOT_ACTIVE',
     role ENUM('ADMIN', 'USER') NOT NULL DEFAULT 'USER'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -26,6 +26,11 @@ CREATE TABLE IF NOT EXISTS meta_data (
     ip VARCHAR(50) NOT NULL,
     provider VARCHAR(100),
     system_number BIGINT,
+    agent_name VARCHAR(100),
+    agent_version VARCHAR(10),
+    os_name VARCHAR(50),
+    os_version VARCHAR(10),
+    device_name VARCHAR(50),
     date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id BIGINT UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

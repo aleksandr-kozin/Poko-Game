@@ -27,6 +27,7 @@ dependencies {
     implementation 'commons-beanutils:commons-beanutils:1.9.4'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.maxmind.geoip2:geoip2:3.0.1'
+    implementation 'com.github.ua-parser:uap-java:1.5.2'
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
     implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.6.9'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'

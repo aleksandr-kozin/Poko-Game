@@ -1,3 +1,3 @@
 package com.mipsas.poko.api.model.response;
 
-public record SignInResponse() {}
+public record SignInResponse(String token) {}

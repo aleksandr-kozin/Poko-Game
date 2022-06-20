@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Users")
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all users")
     @GetMapping
     public List<UserResponse> getAllUsers() {
@@ -31,6 +33,7 @@ public class UserController {
                 .toList();
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(summary = "Get user by id")
     @GetMapping("/{id}")
     public UserResponse getUserById(@PathVariable Long id) {
@@ -38,18 +41,21 @@ public class UserController {
         return new UserResponse(user.getId(), user.getNickName());
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(summary = "Update user")
     @PutMapping
     public void updateUser(@RequestBody @Valid UpdateUserRequest request) {
         userService.updateUser(request);
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(summary = "Delete user by id")
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(summary = "Get all user locations")
     @GetMapping("/{id}" + LOCATIONS)
     public List<UserLocationResponse> getUserLocations(@PathVariable Long id) {
@@ -58,6 +64,7 @@ public class UserController {
                 .toList();
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(summary = "Get all user metadata")
     @GetMapping("/{id}" + META_DATA)
     public List<UserMetaDataResponse> getUserMetadata(@PathVariable Long id) {

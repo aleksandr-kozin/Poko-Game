@@ -7,10 +7,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+@NotNull(message = "{validation.notnull}")
 @Pattern(
-        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\\.!@#$%^&*_=+-]).{8,20}$",
+        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\\\\.!@#$%^&*_=+-]).{8,20}$",
         message = "{validation.password}"
 )
 @Target({FIELD, PARAMETER})

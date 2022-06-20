@@ -4,6 +4,7 @@ import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.CityResponse;
 import com.mipsas.poko.api.service.UserLocationService;
 import com.mipsas.poko.api.service.UserService;
+import static com.mipsas.poko.common.utils.IpAddressUtil.extractIp;
 import com.mipsas.poko.data.entity.UserLocationEntity;
 import com.mipsas.poko.data.repository.UserLocationRepository;
 import java.net.InetAddress;
@@ -31,8 +32,7 @@ public class UserLocationServiceImpl implements UserLocationService {
         Optional.ofNullable(userService.getAuthenticatedUser())
                 .ifPresent(user -> {
                     try (DatabaseReader databaseReader = new DatabaseReader.Builder(ResourceUtils.getFile(geoLite2CityDbLocation)).build()) {
-//            String ip = extractIp(request);
-                        String ip = "78.56.193.46"; // test ip
+                        String ip = extractIp(request);
 
                         CityResponse cityResponse = databaseReader.city(InetAddress.getByName(ip));
 
@@ -52,6 +52,8 @@ public class UserLocationServiceImpl implements UserLocationService {
                                 .postal(postal)
                                 .state(state)
                                 .build());
+
+                        log.info("User's {} location saved successfully", user.getNickName());
 
                     } catch (Exception e) {
                         log.error("Failed to verified user location: {}", e.getMessage());
