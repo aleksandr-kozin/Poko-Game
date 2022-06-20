@@ -13,10 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Authentication")
 @RestController
@@ -38,8 +35,8 @@ public class AuthenticationController {
     }
 
     @Operation(summary = "User sign out")
-    @PostMapping(SIGN_OUT)
-    public void signOut(HttpServletRequest request) {
-        authenticationService.signOut(request);
+    @PostMapping(SIGN_OUT + "/{userId}")
+    public void signOut(@PathVariable Long userId, HttpServletRequest request) {
+        authenticationService.signOut(request, userId);
     }
 }

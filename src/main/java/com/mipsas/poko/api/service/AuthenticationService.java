@@ -8,5 +8,5 @@ import javax.servlet.http.HttpServletRequest;
 public interface AuthenticationService {
     SignInResponse signIn(SignInRequest request);
     void registerUser(UserRegisterRequest request);
-    void signOut(HttpServletRequest request);
+    void signOut(HttpServletRequest request, Long userId);
 }

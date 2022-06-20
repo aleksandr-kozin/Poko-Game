@@ -67,7 +67,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void signOut(HttpServletRequest request) {
+    public void signOut(HttpServletRequest request, Long userId) {
+        userRepository.findById(userId)
+                .ifPresentOrElse(user -> {
+                    user.setStatus(NOT_ACTIVE);
+                    userRepository.save(user);
+                }, NOT_EXISTS_USER::throwException);
+
         String token = jwtService.resolveToken(request);
         jwtBlackListService.addToBlackList(JwtBlackListEntity.builder()
                 .token(token)
