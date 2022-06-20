@@ -1,6 +1,0 @@
-validation:
-  notnull: Value cannot be null
-  notblank: Value cannot be blank
-  positive: Value must be positive
-  email: Wrong email pattern.
-  password: The password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol, and must be between 8 and 20 characters long.

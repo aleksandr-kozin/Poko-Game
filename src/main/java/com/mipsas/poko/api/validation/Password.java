@@ -12,8 +12,7 @@ import javax.validation.constraints.Pattern;
 
 @NotNull(message = "{validation.notnull}")
 @Pattern(
-//        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\\.!@#$%^&*_=+-]).{8,20}$",
-        regexp = "^[a-zA-Z0-9]+$",
+        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\\\\.!@#$%^&*_=+-]).{8,20}$",
         message = "{validation.password}"
 )
 @Target({FIELD, PARAMETER})

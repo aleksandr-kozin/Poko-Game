@@ -14,7 +14,10 @@ import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Authentication")
 @RestController
@@ -39,8 +42,8 @@ public class AuthenticationController {
 
     @PermitAll
     @Operation(summary = "User sign out")
-    @PostMapping(SIGN_OUT + "/{userId}")
-    public void signOut(@PathVariable Long userId, HttpServletRequest request) {
-        authenticationService.signOut(request, userId);
+    @PostMapping(SIGN_OUT)
+    public void signOut(HttpServletRequest request) {
+        authenticationService.signOut(request);
     }
 }

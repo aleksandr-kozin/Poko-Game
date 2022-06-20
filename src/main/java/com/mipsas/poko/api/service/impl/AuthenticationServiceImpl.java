@@ -14,6 +14,7 @@ import com.mipsas.poko.data.entity.UserEntity;
 import com.mipsas.poko.data.repository.CredentialRepository;
 import com.mipsas.poko.data.repository.UserRepository;
 import com.mipsas.poko.security.jwt.JwtUser;
+import com.mipsas.poko.security.jwt.UserAndClaims;
 import com.mipsas.poko.security.service.JwtBlackListService;
 import com.mipsas.poko.security.service.JwtService;
 import java.util.Optional;
@@ -67,14 +68,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void signOut(HttpServletRequest request, Long userId) {
-        userRepository.findById(userId)
+    public void signOut(HttpServletRequest request) {
+        String token = jwtService.resolveToken(request);
+        UserAndClaims userNameWithClaims = jwtService.getUserNameWithClaims(token);
+
+        userRepository.findByNickName(userNameWithClaims.getUserName())
                 .ifPresentOrElse(user -> {
                     user.setStatus(NOT_ACTIVE);
                     userRepository.save(user);
                 }, NOT_EXISTS_USER::throwException);
 
-        String token = jwtService.resolveToken(request);
         jwtBlackListService.addToBlackList(JwtBlackListEntity.builder()
                 .token(token)
                 .expirationDate(jwtService.getExpirationDate(token))
