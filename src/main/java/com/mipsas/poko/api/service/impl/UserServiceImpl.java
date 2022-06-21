@@ -3,7 +3,6 @@ package com.mipsas.poko.api.service.impl;
 import static com.mipsas.poko.api.exception.ErrorStatus.NOT_EXISTS_USER;
 import com.mipsas.poko.api.model.request.UpdateUserRequest;
 import com.mipsas.poko.api.service.UserService;
-import static com.mipsas.poko.common.enums.UserStatus.DELETED;
 import com.mipsas.poko.data.entity.MetaDataEntity;
 import com.mipsas.poko.data.entity.UserEntity;
 import com.mipsas.poko.data.entity.UserLocationEntity;
@@ -23,11 +22,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public List<UserEntity> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
     public UserEntity getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(NOT_EXISTS_USER::getException);
@@ -38,13 +32,6 @@ public class UserServiceImpl implements UserService {
         UserEntity user = getUserById(request.id());
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());
-        userRepository.save(user);
-    }
-
-    @Override
-    public void deleteUserById(Long id) {
-        UserEntity user = getUserById(id);
-        user.setStatus(DELETED);
         userRepository.save(user);
     }
 
