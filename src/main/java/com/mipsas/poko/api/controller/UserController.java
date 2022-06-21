@@ -24,14 +24,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @Operation(summary = "Get all users")
-    @GetMapping
-    public List<UserResponse> getAllUsers() {
-        return userService.getAllUsers().stream()
-                .map(u -> new UserResponse(u.getId(), u.getNickName()))
-                .toList();
-    }
-
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(summary = "Get user by id")
     @GetMapping("/{id}")
@@ -45,12 +37,6 @@ public class UserController {
     @PutMapping
     public void updateUser(@RequestBody @Valid UpdateUserRequest request) {
         userService.updateUser(request);
-    }
-
-    @Operation(summary = "Delete user by id")
-    @DeleteMapping("/{id}")
-    public void deleteUserById(@PathVariable Long id) {
-        userService.deleteUserById(id);
     }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
