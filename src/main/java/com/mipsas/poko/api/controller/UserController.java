@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all users")
     @GetMapping
     public List<UserResponse> getAllUsers() {
@@ -48,7 +47,6 @@ public class UserController {
         userService.updateUser(request);
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @Operation(summary = "Delete user by id")
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable Long id) {
