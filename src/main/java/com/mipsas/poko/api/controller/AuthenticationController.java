@@ -1,9 +1,7 @@
 package com.mipsas.poko.api.controller;
 
-import static com.mipsas.poko.api.Paths.AUTH;
-import static com.mipsas.poko.api.Paths.REGISTRATION;
-import static com.mipsas.poko.api.Paths.SIGN_IN;
-import static com.mipsas.poko.api.Paths.SIGN_OUT;
+import static com.mipsas.poko.api.Paths.*;
+import com.mipsas.poko.api.model.request.ResetPasswordRequest;
 import com.mipsas.poko.api.model.request.SignInRequest;
 import com.mipsas.poko.api.model.request.UserRegisterRequest;
 import com.mipsas.poko.api.model.response.SignInResponse;
@@ -14,10 +12,7 @@ import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Authentication")
 @RestController
@@ -45,5 +40,11 @@ public class AuthenticationController {
     @PostMapping(SIGN_OUT)
     public void signOut(HttpServletRequest request) {
         authenticationService.signOut(request);
+    }
+
+    @Operation(summary = "Reset user password")
+    @PostMapping(RESET_PASSWORD)
+    public void resetPassword(@RequestBody @Valid ResetPasswordRequest request) {
+        authenticationService.resetPassword(request);
     }
 }
