@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 public enum ErrorStatus {
     INCORRECT_REQUEST("Request didn't pass validation"),
     INCORRECT_STATUS("You cannot perform this operation."),
+    INCORRECT_PASSWORD("Old password is incorrect"),
+    PASSWORDS_NOT_EQUAL("Passwords are not equal"),
     INTERNAL_ERROR("Internal error"),
     UNEXPECTED_ERROR("Unexpected exception"),
     ACCESS_DENIED("You cannot perform this operation."),
@@ -20,7 +22,7 @@ public enum ErrorStatus {
     NO_AUTHORIZED_USER("No authorized user"),
     BAD_CREDENTIALS("Unable to parse credentials"),
     USER_DISABLED("User is disabled"),
-    USER_LOCKED("User is locked");
+    USER_LOCKED("User is locked"),;
 
     private final String message;
 

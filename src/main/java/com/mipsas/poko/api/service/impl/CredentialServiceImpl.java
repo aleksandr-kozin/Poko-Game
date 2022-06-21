@@ -1,5 +1,6 @@
 package com.mipsas.poko.api.service.impl;
 
+import static com.mipsas.poko.api.exception.ErrorStatus.EXISTS_CREDENTIAL;
 import static com.mipsas.poko.api.exception.ErrorStatus.NOT_EXIST_CREDENTIAL;
 import com.mipsas.poko.api.service.CredentialService;
 import com.mipsas.poko.data.entity.CredentialEntity;
@@ -13,8 +14,25 @@ public class CredentialServiceImpl implements CredentialService {
     private final CredentialRepository credentialRepository;
 
     @Override
+    public CredentialEntity save(CredentialEntity credential) {
+        return credentialRepository.save(credential);
+    }
+
+    @Override
+    public CredentialEntity getByUserId(Long userId) {
+        return credentialRepository.findByUserId(userId)
+                .orElseThrow(NOT_EXIST_CREDENTIAL::getException);
+    }
+
+    @Override
     public CredentialEntity getByEmail(String email) {
         return credentialRepository.findByEmail(email)
                 .orElseThrow(NOT_EXIST_CREDENTIAL::getException);
+    }
+
+    @Override
+    public void throwExceptionIfExists(String email) {
+        credentialRepository.findByEmail(email)
+                .ifPresent(c -> EXISTS_CREDENTIAL.throwException());
     }
 }

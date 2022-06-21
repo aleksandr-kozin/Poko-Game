@@ -1,8 +1,10 @@
 package com.mipsas.poko.api.service.impl;
 
+import static com.mipsas.poko.api.exception.ErrorStatus.EXISTS_USER;
 import static com.mipsas.poko.api.exception.ErrorStatus.NOT_EXISTS_USER;
 import com.mipsas.poko.api.model.request.UpdateUserRequest;
 import com.mipsas.poko.api.service.UserService;
+import com.mipsas.poko.common.enums.UserStatus;
 import com.mipsas.poko.data.entity.MetaDataEntity;
 import com.mipsas.poko.data.entity.UserEntity;
 import com.mipsas.poko.data.entity.UserLocationEntity;
@@ -20,6 +22,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+
+    @Override
+    public UserEntity save(UserEntity user) {
+        return userRepository.save(user);
+    }
 
     @Override
     public UserEntity getUserById(Long id) {
@@ -56,6 +63,21 @@ public class UserServiceImpl implements UserService {
     public UserEntity getAuthenticatedUser() {
         return userRepository.findByNickName(getAuthenticatedUserName())
                 .orElse(null);
+    }
+
+    @Override
+    public void throwExceptionIfExists(String nickName) {
+        userRepository.findByNickName(nickName)
+                .ifPresent(user -> EXISTS_USER.throwException());
+    }
+
+    @Override
+    public void changeUserStatus(String nickName, UserStatus status) {
+        userRepository.findByNickName(nickName)
+                .ifPresentOrElse(user -> {
+                    user.setStatus(status);
+                    userRepository.save(user);
+                }, NOT_EXISTS_USER::throwException);
     }
 
     private String getAuthenticatedUserName() {
