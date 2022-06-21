@@ -7,6 +7,7 @@ import com.mipsas.poko.api.service.UserService;
 import com.mipsas.poko.common.enums.UserStatus;
 import com.mipsas.poko.data.entity.MetaDataEntity;
 import com.mipsas.poko.data.entity.UserEntity;
+import com.mipsas.poko.data.entity.LocationEntity;
 import com.mipsas.poko.data.entity.UserLocationEntity;
 import com.mipsas.poko.data.repository.UserRepository;
 import com.mipsas.poko.security.jwt.JwtUser;
@@ -43,13 +44,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserLocationEntity> getUserLocations(Long id) {
-        return List.copyOf(getUserById(id).getUserLocations());
+    public List<LocationEntity> getUserLocations(Long id) {
+        return List.copyOf(getUserById(id).getUserLocation().stream()
+                .map(UserLocationEntity::getLocation)
+                .toList());
     }
 
     @Override
     public List<MetaDataEntity> getUserMetaData(Long id) {
-        return List.copyOf(getUserById(id).getUserMetaData());
+        return List.copyOf(getUserById(id).getUserLocation().stream()
+                .map(UserLocationEntity::getMetaData)
+                .toList());
     }
 
     @Override

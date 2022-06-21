@@ -1,7 +1,7 @@
 package com.mipsas.poko.api.service;
 
-import com.mipsas.poko.api.model.request.NetworkInfoRequest;
+import com.mipsas.poko.data.entity.NetworkEntity;
 
 public interface NetworkService {
-    void saveNetworkInfo(NetworkInfoRequest request);
+    NetworkEntity saveNetwork(NetworkEntity locationNetwork);
 }

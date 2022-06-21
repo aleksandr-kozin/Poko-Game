@@ -9,4 +9,5 @@ public interface Paths {
     String LOCATIONS = "/locations";
     String NETWORK_INFO = "/network_info";
     String META_DATA = "/meta_data";
+    String RESET_PASSWORD = "/reset_password";
 }

@@ -1,8 +1,8 @@
 package com.mipsas.poko.config;
 
 import static com.mipsas.poko.api.Paths.AUTH;
-import com.mipsas.poko.api.service.UserLocationService;
-import com.mipsas.poko.api.service.UserMetaDataService;
+import com.mipsas.poko.api.service.LocationService;
+import com.mipsas.poko.api.service.MetaDataService;
 import com.mipsas.poko.security.filter.JwtAuthorizationFilter;
 import com.mipsas.poko.security.filter.UserLocationFilter;
 import com.mipsas.poko.security.filter.UserMetaDataFilter;
@@ -31,8 +31,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtUserDetailsService userDetailsService;
     private final JwtServiceImpl jwtService;
-    private final UserLocationService userLocationService;
-    private final UserMetaDataService userMetaDataService;
+    private final LocationService locationService;
+    private final MetaDataService metaDataService;
     private final JwtBlackListService jwtBlackListService;
 
     @Override
@@ -74,8 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and()
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtService, jwtBlackListService))
-                .addFilterAfter(new UserLocationFilter(userLocationService), BasicAuthenticationFilter.class)
-                .addFilterAfter(new UserMetaDataFilter(userMetaDataService), BasicAuthenticationFilter.class);
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtService, jwtBlackListService));
+//                .addFilterAfter(new UserLocationFilter(locationService), BasicAuthenticationFilter.class)
+//                .addFilterAfter(new UserMetaDataFilter(metaDataService), BasicAuthenticationFilter.class);
     }
 }

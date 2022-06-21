@@ -35,11 +35,5 @@ public class UserEntity extends BaseEntity<Long> {
     private UserAuthority role;
 
     @OneToMany(mappedBy = "user", cascade = REMOVE)
-    private Set<UserLocationEntity> userLocations;
-
-    @OneToMany(mappedBy = "user", cascade = REMOVE)
-    private Set<MetaDataEntity> userMetaData;
-
-    @OneToMany(mappedBy = "user", cascade = REMOVE)
-    private Set<NetworkInfoEntity> networks;
+    private Set<UserLocationEntity> userLocation;
 }

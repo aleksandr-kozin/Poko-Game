@@ -1,8 +1,6 @@
 package com.mipsas.poko.data.entity;
 
-import java.time.Instant;
 import javax.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -34,11 +32,4 @@ public class MetaDataEntity extends BaseEntity<Long> {
 
     @Column(name = "device_name")
     private String deviceName;
-
-    @Builder.Default
-    private Instant date = Instant.now();
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
 }

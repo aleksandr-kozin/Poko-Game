@@ -1,7 +1,7 @@
 package com.mipsas.poko.api.service;
 
-import javax.servlet.http.HttpServletRequest;
+import com.mipsas.poko.data.entity.UserLocationEntity;
 
 public interface UserLocationService {
-    void verifyUserLocation(HttpServletRequest request);
+    UserLocationEntity save(UserLocationEntity userLocation);
 }
