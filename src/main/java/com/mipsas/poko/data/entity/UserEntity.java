@@ -39,4 +39,7 @@ public class UserEntity extends BaseEntity<Long> {
 
     @OneToMany(mappedBy = "user", cascade = REMOVE)
     private Set<MetaDataEntity> userMetaData;
+
+    @OneToMany(mappedBy = "user", cascade = REMOVE)
+    private Set<NetworkInfoEntity> networks;
 }
