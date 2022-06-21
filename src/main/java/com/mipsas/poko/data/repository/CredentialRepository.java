@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CredentialRepository extends JpaRepository<CredentialEntity, Long> {
 
     Optional<CredentialEntity> findByEmail(String email);
+    Optional<CredentialEntity> findByUserId(Long userId);
 }
