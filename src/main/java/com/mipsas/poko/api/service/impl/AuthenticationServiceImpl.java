@@ -21,7 +21,6 @@ import com.mipsas.poko.security.service.JwtService;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -83,16 +82,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void resetPassword(ResetPasswordRequest request) {
         CredentialEntity credential = credentialService.getByUserId(request.userId());
 
-        if (!passwordEncoder.matches(request.oldPassword(), credential.getPassword())) {
+        if (isPasswordWrong(request.oldPassword(), credential.getPassword())) {
             INCORRECT_PASSWORD.throwException();
         }
 
-        if (!request.newPassword().equals(request.repeatPassword())) {
+        if (isPasswordsNotEqual(request.newPassword(), request.repeatPassword())) {
             PASSWORDS_NOT_EQUAL.throwException();
         }
 
         credential.setPassword(passwordEncoder.encode(request.newPassword()));
         credentialService.save(credential);
+    }
+
+    private boolean isPasswordWrong(String password, String passwordFromDb) {
+        return !passwordEncoder.matches(password, passwordFromDb);
+    }
+
+    private boolean isPasswordsNotEqual(String p1, String p2) {
+        return !p1.equals(p2);
     }
 
     private Authentication authenticate(SignInRequest request) {
